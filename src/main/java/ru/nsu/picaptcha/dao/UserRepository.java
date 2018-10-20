@@ -1,9 +1,8 @@
 package ru.nsu.picaptcha.dao;
 
 import org.springframework.data.repository.CrudRepository;
+import ru.nsu.picaptcha.model.User;
 
-import ru.nsu.picaptcha.model.Session;
-
-public interface UserRepository extends CrudRepository<Session ,Long> {
+public interface UserRepository extends CrudRepository<User,Long> {
 
 }

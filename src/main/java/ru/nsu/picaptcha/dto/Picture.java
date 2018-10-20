@@ -1,4 +1,4 @@
-package ru.nsu.picaptcha.model;
+package ru.nsu.picaptcha.dto;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class Picture {
-  
+
   private List<Pair<Integer, Integer>> image;
   private String word;
   
