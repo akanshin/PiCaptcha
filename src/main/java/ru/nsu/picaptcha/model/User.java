@@ -1,9 +1,6 @@
 package ru.nsu.picaptcha.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Entity
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -22,8 +22,14 @@ public class User {
   @GenericGenerator(name= "increment", strategy= "increment")
   @Column
   private long id;
-  
+
   @Column(nullable = false)
-  private String login;
+  private String username;
+
+  @Column(nullable = false)
+  private String password;
+
+//  @Column(nullable = false)
+//  private Set<Role> roles;
   
 }
