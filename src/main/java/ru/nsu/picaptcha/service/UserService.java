@@ -1,22 +1,19 @@
 package ru.nsu.picaptcha.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.picaptcha.dao.UserRepository;
 import ru.nsu.picaptcha.model.User;
-
-import java.util.*;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
-  UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  public Optional<User> find(@PathVariable String login) {
+  public Optional<User> find(String login) {
     for (User user : userRepository.findAll()) {
       if (user.getLogin().equals(login))
         return Optional.of(user);
@@ -25,11 +22,12 @@ public class UserService {
     return Optional.empty();
   }
 
-  public Boolean setBanned(@PathVariable String login, Boolean toBan) {
+  @Transactional
+  public Boolean setBanned(String login, Boolean toBan) {
     Optional<User> user = find(login);
 
     if (user.isPresent()) {
-      user.get().setBanned(toBan);
+      user.get().setIsBanned(toBan);
       userRepository.save(user.get());
       return true;
     } else {
@@ -37,21 +35,25 @@ public class UserService {
     }
   }
 
-  public Boolean addFriend(@PathVariable String myLogin, @PathVariable String otherLogin) {
+  @Transactional
+  public Boolean addFriend(String myLogin, String otherLogin) {
     Optional<User> myUser = find(myLogin);
     Optional<User> otherUser = find(otherLogin);
 
     if (myUser.isPresent() && otherUser.isPresent()) {
       boolean result = myUser.get().addFriend(otherUser.get());
-      if (result)
+
+      if (result) {
         userRepository.save(myUser.get());
+      }
       return result;
     } else {
       return false;
     }
   }
 
-  public Boolean removeFriend(@PathVariable String myLogin, @PathVariable String otherLogin) {
+  @Transactional
+  public Boolean removeFriend(String myLogin, String otherLogin) {
     Optional<User> myUser = find(myLogin);
     Optional<User> otherUser = find(otherLogin);
 
@@ -66,7 +68,7 @@ public class UserService {
     }
   }
 
-  public User editUser(@RequestBody User newUser) {
+  public User editUser(User newUser) {
     return userRepository.save(newUser);
   }
 }
