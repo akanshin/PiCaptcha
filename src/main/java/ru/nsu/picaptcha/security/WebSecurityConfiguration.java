@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+import javax.sql.DataSource;
+
 @Configuration
 @SuppressWarnings("unused")
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -23,11 +25,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
     @Autowired
+    private DataSource dataSource;
+
+    @Autowired
     public void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        // TODO: Move to database
-        auth.inMemoryAuthentication()
-                .withUser("user").password("user").roles("USER").and()
-                .withUser("admin").password("admin").roles("USER", "ADMIN");
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
     }
 
     @Override
