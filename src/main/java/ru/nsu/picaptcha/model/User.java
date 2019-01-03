@@ -30,7 +30,7 @@ public class User {
     private long id;
 
     @Column(nullable = false)
-    private String user;
+    private String username;
 
     @Column(nullable = false)
     private String password;
