@@ -1,35 +1,51 @@
 package ru.nsu.picaptcha.model;
 
-import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
-  @Id
-  @GeneratedValue(generator = "increment")
-  @GenericGenerator(name= "increment", strategy= "increment")
-  @Column
-  private long id;
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name= "increment", strategy= "increment")
+    @Column
+    private long id;
 
-  @Column(nullable = false)
-  private String username;
+    @Column(nullable = false)
+    private String user;
 
-  @Column(nullable = false)
-  private String password;
+    @Column(nullable = false)
+    private String password;
 
-//  @Column(nullable = false)
-//  private Set<Role> roles;
-  
+    @Column(name = "is_banned", nullable = false)
+    private Boolean isBanned = false;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<User> friends = new HashSet<>();
+
+    public boolean addFriend(User user) {
+        return friends.add(user);
+    }
+
+    public boolean removeFriend(User user) {
+        return friends.remove(user);
+    }
 }
