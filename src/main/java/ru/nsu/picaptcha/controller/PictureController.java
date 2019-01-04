@@ -1,11 +1,10 @@
 package ru.nsu.picaptcha.controller;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.nsu.picaptcha.dto.Picture;
 import ru.nsu.picaptcha.service.PictureService;
 
@@ -21,5 +20,18 @@ public class PictureController {
   public boolean send(@RequestBody Picture picture) {
     return pictureService.process(picture);
   }
-  
+
+  @RequestMapping(value = "/random_word", method = RequestMethod.GET)
+  public ResponseEntity<String> getRandomWord() {
+    String result = pictureService.getRandomWord();
+
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  @RequestMapping(value = "/class/{className}", method = RequestMethod.POST)
+  public ResponseEntity<Boolean> verifyPictureClass(@RequestBody Picture picture, @PathVariable String className) {
+    Boolean result = pictureService.verifyPictureClass(picture, className);
+
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
 }
