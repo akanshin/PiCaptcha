@@ -17,8 +17,7 @@ import ru.nsu.picaptcha.service.UserService;
 @AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @RequestMapping(value = "/{login}", method = RequestMethod.GET)
     public ResponseEntity<Boolean> find(@PathVariable String login) {

@@ -1,27 +1,25 @@
 package ru.nsu.picaptcha.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import lombok.AllArgsConstructor;
 import ru.nsu.picaptcha.dto.Picture;
 import ru.nsu.picaptcha.service.PictureService;
 
 @RestController
-@RequestMapping(value = "/picture", consumes = MediaType.APPLICATION_JSON_VALUE,
-produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "picture", consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class PictureController {
 
-  @Autowired
-  PictureService pictureService;
+    private final PictureService pictureService;
 
-  @RequestMapping
-  public boolean send(@RequestBody Picture picture) {
-    return pictureService.process(picture);
-  }
-  
+    @PostMapping("send")
+    public String send(@RequestBody Picture picture) {
+        return pictureService.process(picture);
+    }
+
 }
