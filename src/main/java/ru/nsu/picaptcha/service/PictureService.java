@@ -27,7 +27,7 @@ public class PictureService {
         requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
-        formData.add("data", resource);
+        formData.add("user-file", resource);
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(formData, requestHeaders);
 
