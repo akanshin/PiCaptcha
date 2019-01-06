@@ -26,10 +26,14 @@ public class User {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
+    @Column
     private long id;
 
     @Column(name = "login", nullable = false)
     private String login;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(name = "is_banned", nullable = false)
     private Boolean isBanned = false;
