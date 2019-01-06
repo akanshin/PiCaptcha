@@ -1,7 +1,6 @@
 package ru.nsu.picaptcha.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.picaptcha.dao.UserRepository;
@@ -13,12 +12,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public Optional<User> find(String login) {
         for (User user : userRepository.findAll()) {
-            if (user.getUsername().equals(login))
+            if (user.getLogin().equals(login))
                 return Optional.of(user);
         }
 

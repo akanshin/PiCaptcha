@@ -1,11 +1,14 @@
 package ru.nsu.picaptcha.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.picaptcha.model.User;
 import ru.nsu.picaptcha.service.UserService;
 
@@ -17,8 +20,7 @@ import ru.nsu.picaptcha.service.UserService;
 @AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @RequestMapping(value = "/{login}", method = RequestMethod.GET)
     public ResponseEntity<Boolean> find(@PathVariable String login) {

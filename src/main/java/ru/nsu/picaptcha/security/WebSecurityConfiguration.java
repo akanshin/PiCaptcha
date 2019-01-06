@@ -11,27 +11,31 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import javax.sql.DataSource;
 
 @Configuration
-@SuppressWarnings("unused")
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    private static final AuthenticationFailureHandler FAILURE_HANDLER = new SimpleUrlAuthenticationFailureHandler();
+
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
+    private final DataSource dataSource;
 
     @Autowired
-    LoginSuccessHandler loginSuccessHandler;
-
-    @Autowired
-    LogoutSuccessHandler logoutSuccessHandler;
-
-    AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
-
-    @Autowired
-    private DataSource dataSource;
+    public WebSecurityConfiguration(RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+                                    LoginSuccessHandler loginSuccessHandler,
+                                    LogoutSuccessHandler logoutSuccessHandler,
+                                    DataSource dataSource) {
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
+        this.dataSource = dataSource;
+    }
 
     @Autowired
     public void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
+                .usersByUsernameQuery("select login, password, enabled from users where login=?")
+                .authoritiesByUsernameQuery("select login, role from user_roles where login=?");
     }
 
     @Override
@@ -56,7 +60,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .successHandler(loginSuccessHandler)
-                .failureHandler(failureHandler)
+                .failureHandler(FAILURE_HANDLER)
                 .and()
                 .logout()
                 .logoutSuccessHandler(logoutSuccessHandler);

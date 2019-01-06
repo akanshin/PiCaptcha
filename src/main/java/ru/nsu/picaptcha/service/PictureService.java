@@ -2,7 +2,6 @@ package ru.nsu.picaptcha.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class PictureService {
 
   private final String apiUrl = "http://localhost:5000";
