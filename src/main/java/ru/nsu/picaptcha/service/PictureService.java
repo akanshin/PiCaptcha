@@ -1,27 +1,18 @@
 package ru.nsu.picaptcha.service;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import ru.nsu.picaptcha.dto.Picture;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.util.Pair;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-
-import lombok.AllArgsConstructor;
-import ru.nsu.picaptcha.dto.Picture;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -30,32 +21,9 @@ public class PictureService {
     private final String url = "http://localhost:5000/api/";
 
     public String process(Picture picture) {
-        //На будущее
-        //byte[] aBytes = pictureToByteArray(picture);
-        //HttpEntity<byte[]> requestEntity = new HttpEntity<>(aBytes);
-        //RestTemplate restTemplate = new RestTemplate();
-        //return restTemplate.exchange(url + "image_classifier", HttpMethod.POST, requestEntity, String.class).getBody();
-      
-        Resource resource = new FileSystemResource("/home/vikacech/Documents/projects/PiCaptcha_ML/test.jpg");
-        
-        BufferedImage image = null;
-        try {
-          image = ImageIO.read(resource.getFile());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        
-        //HttpHeaders requestHeaders = new HttpHeaders();
-        //requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        //MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
-        //formData.add("user-file", resource);
-
-        //HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(formData, requestHeaders);
-
-        byte[] aBytes = imageToByteArray(image);
+        byte[] aBytes = pictureToByteArray(picture);
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(aBytes);
-        
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(url + "image_classifier", HttpMethod.POST, requestEntity, String.class).getBody();
     }
@@ -72,7 +40,7 @@ public class PictureService {
       g.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
       
       g.setColor(Color.black);
-      for (Pair<Integer, Integer> point : picture.getImage()) {
+      for (List<Integer> point : picture.getImage()) {
         g.drawRect(bufferedImage.getWidth(), bufferedImage.getHeight(), 1, 1);
       }
       
@@ -98,4 +66,6 @@ public class PictureService {
       
       return aBytes;
     }
+
+
 }
