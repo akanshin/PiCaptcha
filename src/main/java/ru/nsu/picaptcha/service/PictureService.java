@@ -8,7 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import ru.nsu.picaptcha.dto.Picture;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -67,5 +68,8 @@ public class PictureService {
       return aBytes;
     }
 
-
+    public String getClasses() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url + "classes", String.class);
+    }
 }
