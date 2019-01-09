@@ -1,1 +1,1 @@
-# PiCapthca
+# PiCaptcha

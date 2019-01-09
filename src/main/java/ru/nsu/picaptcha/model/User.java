@@ -25,12 +25,12 @@ public class User {
 
     @Id
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name= "increment", strategy= "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column
     private long id;
 
-    @Column(nullable = false)
-    private String username;
+    @Column(name = "login", nullable = false)
+    private String login;
 
     @Column(nullable = false)
     private String password;

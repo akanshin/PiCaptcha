@@ -10,10 +10,10 @@ import java.io.IOException;
 
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
     @Override
-    public void onAuthenticationSuccess(
-            HttpServletRequest request, HttpServletResponse response, Authentication authentication
-    ) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println("LoginSuccessful");
     }

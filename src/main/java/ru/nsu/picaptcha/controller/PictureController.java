@@ -4,9 +4,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+ 
 import ru.nsu.picaptcha.dto.Picture;
 import ru.nsu.picaptcha.service.PictureService;
 
@@ -16,15 +23,20 @@ import ru.nsu.picaptcha.service.PictureService;
 @AllArgsConstructor
 public class PictureController {
 
-    private final PictureService pictureService;
+  private final PictureService pictureService;
 
-    @PostMapping("send")
-    public String send(@RequestBody Picture picture) {
-        return pictureService.process(picture);
-    }
+  @RequestMapping(value = "/random_word", method = RequestMethod.GET)
+  public ResponseEntity<String> getRandomWord() {
+    String result = pictureService.getRandomWord();
 
-    @GetMapping("classes")
-    public String getClasses() {
-        return pictureService.getClasses();
-    }
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  @RequestMapping(value = "/class/{className}", method = RequestMethod.POST)
+  public ResponseEntity<Boolean> verifyPictureClass(@RequestBody Picture picture, @PathVariable String className) {
+    Boolean result = pictureService.verifyPictureClass(picture, className);
+
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
 }
+ 

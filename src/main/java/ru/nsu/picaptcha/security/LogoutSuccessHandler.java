@@ -13,9 +13,8 @@ import java.io.IOException;
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     @Override
-    public void onLogoutSuccess(
-            HttpServletRequest request, HttpServletResponse response, Authentication authentication
-    ) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                Authentication authentication) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println("LogoutSuccessful");
         super.onLogoutSuccess(request, response, authentication);
