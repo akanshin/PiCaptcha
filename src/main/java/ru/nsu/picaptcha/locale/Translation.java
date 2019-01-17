@@ -20,10 +20,9 @@ public class Translation {
 
   public Translation() {
     map = new HashMap<String, String>();
-    FileReader fr;
     try {
       File file = new File(this.getClass().getResource("locale.csv").getFile());
-      fr = new FileReader(file);
+      FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
       String line;
       while((line = br.readLine()) != null) {
