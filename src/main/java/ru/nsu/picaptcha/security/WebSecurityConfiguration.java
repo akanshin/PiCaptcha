@@ -30,6 +30,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .csrf()
                 .disable()
                 .authorizeRequests()
+                .antMatchers("/api/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
