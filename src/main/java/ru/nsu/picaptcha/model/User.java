@@ -29,7 +29,7 @@ public class User {
     @Column
     private long id;
 
-    @Column(name = "login", nullable = false)
+    @Column(name = "login", nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
