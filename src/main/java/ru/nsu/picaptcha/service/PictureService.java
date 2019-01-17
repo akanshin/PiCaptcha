@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +23,7 @@ import ru.nsu.picaptcha.dto.Picture;
 
 @Slf4j
 @Service
-public class PictureService {
+public class PictureService  {
 
   private final String apiUrl = "http://localhost:5000/api/";
 
@@ -43,16 +45,42 @@ public class PictureService {
   }
 
   public Boolean verifyPictureClass(Picture picture, String className) {
-    HttpEntity<byte[]> requestEntity = new HttpEntity<>(picture.getEncodedData());
+    byte[] decoded = Base64.getDecoder().decode(picture.getEncodedData());
+    HttpEntity<byte[]> requestEntity = new HttpEntity<>(decoded);
     RestTemplate restTemplate = new RestTemplate();
     ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl + "image_classifier", HttpMethod.POST, requestEntity, String.class);
     String categoryJson = responseEntity.getBody();
+    System.out.println(categoryJson);
+    String realClass = "undef";
+    try {
 
-    Map<String, Object> data = getjsonObject(categoryJson);
-    String realClass = (String) data.get("category");
+    	final JSONObject obj = new JSONObject(categoryJson);
+    	realClass =  obj.getString("category");
+    	System.out.println(realClass);
+    } catch (Exception e){
+    }
+
     return realClass.equals(className);
   }
 
+  public String getPictureClass(Picture picture) {
+    byte[] decoded = Base64.getDecoder().decode(picture.getEncodedData());
+    HttpEntity<byte[]> requestEntity = new HttpEntity<>(decoded);
+    RestTemplate restTemplate = new RestTemplate();
+    ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl + "image_classifier", HttpMethod.POST, requestEntity, String.class);
+    String categoryJson = responseEntity.getBody();
+    System.out.println(categoryJson);
+    String realClass = "undef";
+    try {
+
+    	final JSONObject obj = new JSONObject(categoryJson);
+    	realClass =  obj.getString("category");
+    	System.out.println(realClass);
+    } catch (Exception e){
+    }
+
+    return realClass;
+  }
   private Map<String, Object> getjsonObject(String getURI) {
     String result = restTemplate.getForObject(getURI, String.class);
     TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};

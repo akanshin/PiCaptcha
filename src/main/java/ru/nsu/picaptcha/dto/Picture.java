@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Picture {
-  private byte[] encodedData;
+  private String encodedData;
   private String word;
 }
