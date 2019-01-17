@@ -63,7 +63,7 @@ async def get_picture_class(request):
 
 async def get_all_classes(request):
     response = model.get_all_class_names()
-    return web.Response(text=json.dumps(response))
+    return web.Response(text=json.dumps({"value": response}))
 
 app = web.Application()
 app.router.add_route('POST', '/api/image_classifier', get_picture_class)
