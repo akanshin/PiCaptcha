@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.nsu.picaptcha.dto.Picture;
+import ru.nsu.picaptcha.locale.Translation;
 
 @Slf4j
 @Service
@@ -38,7 +39,7 @@ public class PictureService  {
 
     if (!allWords.isEmpty()) {
       Collections.shuffle(allWords);
-      return allWords.get(0);
+      return Translation.getInstance().translate(allWords.get(0));
     } else {
       return null;
     }
@@ -60,7 +61,7 @@ public class PictureService  {
     } catch (Exception e){
     }
 
-    return realClass.equals(className);
+    return Translation.getInstance().translate(realClass).equals(className);
   }
 
   public String getPictureClass(Picture picture) {
@@ -79,7 +80,7 @@ public class PictureService  {
     } catch (Exception e){
     }
 
-    return realClass;
+    return Translation.getInstance().translate(realClass);
   }
   private Map<String, Object> getjsonObject(String getURI) {
     String result = restTemplate.getForObject(getURI, String.class);
