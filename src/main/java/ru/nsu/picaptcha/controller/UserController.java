@@ -1,7 +1,6 @@
 package ru.nsu.picaptcha.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.nsu.picaptcha.model.User;
 import ru.nsu.picaptcha.service.UserService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(
@@ -62,8 +63,14 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> edit(@RequestBody User user) {
-        User result = userService.editUser(user);
+        Optional<User> user1 = userService.find(user.getLogin());
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        if (user1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            User result = userService.save(user);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
     }
 }

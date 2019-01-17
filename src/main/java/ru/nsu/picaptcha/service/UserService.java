@@ -69,7 +69,7 @@ public class UserService {
         }
     }
 
-    public User editUser(User newUser) {
+    public User save(User newUser) {
         return userRepository.save(newUser);
     }
 }

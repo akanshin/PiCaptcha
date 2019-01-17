@@ -16,12 +16,21 @@ import java.util.Collections;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements UserDetailsService {
 
     private final LoginSuccessHandler loginSuccessHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
+    private final MyAuthenticationFailureHandler authenticationFailureHandler;
     private final UserRepository userRepository;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    public WebSecurityConfiguration(LoginSuccessHandler loginSuccessHandler, UserRepository userRepository) {
+    public WebSecurityConfiguration(LoginSuccessHandler loginSuccessHandler, UserRepository userRepository,
+                                    LogoutSuccessHandler logoutSuccessHandler,
+                                    MyAuthenticationFailureHandler authenticationFailureHandler,
+                                    RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
         this.loginSuccessHandler = loginSuccessHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
         this.userRepository = userRepository;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
     }
 
     @Override
@@ -29,16 +38,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         http
                 .csrf()
                 .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
                 .permitAll()
                 .successHandler(loginSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll();
 
     }
