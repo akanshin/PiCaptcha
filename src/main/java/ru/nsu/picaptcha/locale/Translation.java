@@ -16,12 +16,12 @@ public class Translation {
     return instance;
   }
 
-  private Map<String, String> map = null;
+  private Map<String, String> map;
 
   public Translation() {
-    map = new HashMap<String, String>();
+    map = new HashMap<>();
     try {
-      File file = new File(this.getClass().getResource("locale.csv").getFile());
+      File file = new File(this.getClass().getClassLoader().getResource("locale.csv").getFile());
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
       String line;
