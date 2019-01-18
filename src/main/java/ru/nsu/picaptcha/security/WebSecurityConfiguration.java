@@ -44,7 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .authorizeRequests()
                 .antMatchers("/api/user").permitAll()
                 .antMatchers("/api/picture/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
