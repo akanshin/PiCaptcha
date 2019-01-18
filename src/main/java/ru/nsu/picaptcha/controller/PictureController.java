@@ -16,7 +16,7 @@ import ru.nsu.picaptcha.dto.Picture;
 import ru.nsu.picaptcha.service.PictureService;
 
 @RestController
-@RequestMapping(value = "api/picture", 
+@RequestMapping(value = "/api/picture",
                 consumes = MediaType.APPLICATION_JSON_VALUE, 
                 produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "http://localhost:3000")

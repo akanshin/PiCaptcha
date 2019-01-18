@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(
-        value = "api/user", consumes = MediaType.APPLICATION_JSON_VALUE,
+        value = "/api/user", consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @CrossOrigin(origins = "http://localhost:3000")
